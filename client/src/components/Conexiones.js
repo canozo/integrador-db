@@ -1,23 +1,72 @@
 import React from 'react';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import requests from './requests/conexiones';
 
 class Conexiones extends React.Component {
   constructor(props) {
     super(props);
     this.props = props;
 
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.pruebaOrigen = this.pruebaOrigen.bind(this);
+    this.pruebaDestino = this.pruebaDestino.bind(this);
+
     this.state = {
       nombreInstanciaOrigen: '',
       nombreBaseDatosOrigen: '',
       puertoOrigen: '',
       nombreUsuarioOrigen:'',
-      passOrigen:'',
+      passOrigen: '',
       nombreInstanciaDestino: '',
       nombreBaseDatosDestino: '',
       puertoDestino: '',
       nombreUsuarioDestino:'',
       passDestino:'',
     };
+  }
+
+  pruebaOrigen() {
+    const {
+      nombreInstanciaOrigen, puertoOrigen, nombreBaseDatosOrigen, nombreUsuarioOrigen, passOrigen,
+    } = this.state;
+
+    const config = {
+      server: nombreInstanciaOrigen,
+      port: puertoOrigen,
+      database: nombreBaseDatosOrigen,
+      user: nombreUsuarioOrigen,
+      password: passOrigen,
+    };
+
+    requests.putOrigen(config)
+      .then((res) => {
+        console.log(res);
+      }).catch(() => {
+      });
+  }
+
+  pruebaDestino() {
+    const {
+      nombreInstanciaDestino, puertoDestino, nombreBaseDatosDestino, nombreUsuarioDestino, passDestino,
+    } = this.state;
+
+    const config = {
+      host: nombreInstanciaDestino,
+      port: puertoDestino,
+      database: nombreBaseDatosDestino,
+      user: nombreUsuarioDestino,
+      password: passDestino,
+    };
+
+    requests.putDestino(config)
+    .then((res) => {
+      console.log(res);
+    }).catch(() => {
+    });
+}
+
+  handleSubmit(event) {
+    event.preventDefault();
   }
 
   render() {
@@ -72,7 +121,7 @@ class Conexiones extends React.Component {
                 // placeholder="123"
               />
             </FormGroup>
-            <Button>Probar</Button>
+            <Button onClick={this.pruebaOrigen}>[Status] Probar</Button>
           </div>
           <div className="col-md-2" />
           <div className="col-md-3">
@@ -120,12 +169,12 @@ class Conexiones extends React.Component {
                   // placeholder="123"
                 />
               </FormGroup>
-            <Button>Probar</Button>
+            <Button onClick={this.pruebaDestino}>[Status] Probar</Button>
           </div>
           <div className="col-md-2" />
         </div>
         <FormGroup style={{ display: 'flex', justifyContent: 'center' }}>
-          <Button>Guardar</Button>
+          <Button type="submit" onClick={this.handleSubmit}>Guardar</Button>
         </FormGroup>
       </Form>
     );
