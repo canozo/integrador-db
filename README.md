@@ -10,3 +10,8 @@ create-react-app client
 ```
 npm install bootstrap@4.1.3 react-router-dom reactstrap
 ```
+
+3. Si MySQL da error de autenticacion, entonces:
+```
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password'
+```

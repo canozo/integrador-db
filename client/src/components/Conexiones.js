@@ -12,16 +12,16 @@ class Conexiones extends React.Component {
     this.pruebaDestino = this.pruebaDestino.bind(this);
 
     this.state = {
-      nombreInstanciaOrigen: '',
-      nombreBaseDatosOrigen: '',
-      puertoOrigen: '',
-      nombreUsuarioOrigen:'',
-      passOrigen: '',
-      nombreInstanciaDestino: '',
-      nombreBaseDatosDestino: '',
-      puertoDestino: '',
-      nombreUsuarioDestino:'',
-      passDestino:'',
+      nombreInstanciaOrigen: 'LAPTOP-U87EPQIM',
+      nombreBaseDatosOrigen: 'Northwind',
+      puertoOrigen: '1433',
+      nombreUsuarioOrigen: 'sa',
+      passOrigen: 'password',
+      nombreInstanciaDestino: 'localhost',
+      nombreBaseDatosDestino: 'db_northwind',
+      puertoDestino: '3306',
+      nombreUsuarioDestino: 'root',
+      passDestino: 'password',
     };
   }
 
@@ -32,7 +32,7 @@ class Conexiones extends React.Component {
 
     const config = {
       server: nombreInstanciaOrigen,
-      port: puertoOrigen,
+      port: Number(puertoOrigen),
       database: nombreBaseDatosOrigen,
       user: nombreUsuarioOrigen,
       password: passOrigen,
