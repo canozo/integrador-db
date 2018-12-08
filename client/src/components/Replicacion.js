@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button, CustomInput, Form, FormGroup, Label } from 'reactstrap';
+import { Button, CustomInput, Form, FormGroup, Label, Alert } from 'reactstrap';
+import requests from './requests/replicacion';
 
 class Replicacion extends React.Component {
   constructor(props) {
@@ -12,11 +13,24 @@ class Replicacion extends React.Component {
     this.checkearReplicando = this.checkearReplicando.bind(this);
 
     this.state = {
-      noReplicadas: ['tbl_empleados', 'tbl_alumnos', 'tbl_secciones'],
-      replicadas: ['tbl_aulas'],
+      trabajando: true,
+      error: false,
+      mensaje: '',
+      noReplicadas: [],
+      replicadas: [],
       checkedSinReplicar: {},
       checkedReplicando: {},
     };
+
+    requests.get()
+      .then((res) => {
+        this.setState({
+          trabajando: false,
+          error: res.error,
+          mensaje: res.mensaje,
+          noReplicadas: res.tablas,
+        });
+      });
   }
 
   checkearSinReplicar(event) {
@@ -76,11 +90,34 @@ class Replicacion extends React.Component {
   }
 
   render() {
-    const { replicadas, noReplicadas, checkedReplicando, checkedSinReplicar } = this.state;
+    const { trabajando, error, mensaje, replicadas, noReplicadas, checkedReplicando, checkedSinReplicar } = this.state;
+
+    if (trabajando) {
+      return (
+        <div className="row">
+          <div className="col-md-1" />
+          <div className="col-md-10">
+            <Alert color="primary">Trabajando...</Alert>
+          </div>
+          <div className="col-md-1" />
+        </div>
+      );
+    }
+
+    if (error) {
+      return (
+        <div className="row">
+          <div className="col-md-1" />
+          <div className="col-md-10">
+            <Alert color="danger">{mensaje}</Alert>
+          </div>
+          <div className="col-md-1" />
+        </div>
+      );
+    }
 
     return (
       <Form>
-        {/* <h1 style={{ display: 'flex', justifyContent: 'center' }}>Replicacion</h1> */}
         <div className="row">
           <div className="col-md-1" />
           <div className="col-md-2">

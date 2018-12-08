@@ -7,7 +7,6 @@ class Conexiones extends React.Component {
     super(props);
     this.props = props;
 
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.pruebaOrigen = this.pruebaOrigen.bind(this);
     this.pruebaDestino = this.pruebaDestino.bind(this);
 
@@ -66,19 +65,15 @@ class Conexiones extends React.Component {
     };
 
     requests.putDestino(config)
-    .then((res) => {
-      const alertDestino = {
-        mostrar: true,
-        error: res.error,
-        mensaje: res.mensaje,
-      };
-      this.setState({ alertDestino });
-    }).catch(() => {
-    });
-}
-
-  handleSubmit(event) {
-    event.preventDefault();
+      .then((res) => {
+        const alertDestino = {
+          mostrar: true,
+          error: res.error,
+          mensaje: res.mensaje,
+        };
+        this.setState({ alertDestino });
+      }).catch(() => {
+      });
   }
 
   render() {
@@ -187,9 +182,6 @@ class Conexiones extends React.Component {
           </div>
           <div className="col-md-2" />
         </div>
-        <FormGroup style={{ display: 'flex', justifyContent: 'center' }}>
-          <Button type="submit" onClick={this.handleSubmit}>Guardar</Button>
-        </FormGroup>
       </Form>
     );
   }
