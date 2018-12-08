@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input, Alert } from 'reactstrap';
 import requests from './requests/conexiones';
 
 class Conexiones extends React.Component {
@@ -17,11 +17,13 @@ class Conexiones extends React.Component {
       puertoOrigen: '1433',
       nombreUsuarioOrigen: 'sa',
       passOrigen: 'password',
+      alertOrigen: { mostrar: false, error: false, mensaje: '' },
       nombreInstanciaDestino: 'localhost',
       nombreBaseDatosDestino: 'db_northwind',
       puertoDestino: '3306',
       nombreUsuarioDestino: 'root',
       passDestino: 'password',
+      alertDestino: { mostrar: false, error: false, mensaje: '' },
     };
   }
 
@@ -40,7 +42,12 @@ class Conexiones extends React.Component {
 
     requests.putOrigen(config)
       .then((res) => {
-        console.log(res);
+        const alertOrigen = {
+          mostrar: true,
+          error: res.error,
+          mensaje: res.mensaje,
+        };
+        this.setState({ alertOrigen });
       }).catch(() => {
       });
   }
@@ -60,7 +67,12 @@ class Conexiones extends React.Component {
 
     requests.putDestino(config)
     .then((res) => {
-      console.log(res);
+      const alertDestino = {
+        mostrar: true,
+        error: res.error,
+        mensaje: res.mensaje,
+      };
+      this.setState({ alertDestino });
     }).catch(() => {
     });
 }
@@ -70,7 +82,9 @@ class Conexiones extends React.Component {
   }
 
   render() {
-    const { nombreInstanciaOrigen, nombreBaseDatosOrigen, puertoOrigen, nombreUsuarioOrigen, passOrigen, nombreInstanciaDestino, nombreBaseDatosDestino, puertoDestino, nombreUsuarioDestino, passDestino } = this.state;
+    const {
+      nombreInstanciaOrigen, nombreBaseDatosOrigen, puertoOrigen, nombreUsuarioOrigen, passOrigen, nombreInstanciaDestino, nombreBaseDatosDestino, puertoDestino, nombreUsuarioDestino, passDestino, alertDestino, alertOrigen,
+    } = this.state;
 
     return (
       <Form>
@@ -85,7 +99,6 @@ class Conexiones extends React.Component {
                 onChange={event => this.setState({ nombreInstanciaOrigen: event.target.value })}
                 name="nombre-instanciaOrigen"
                 id="nombreInstanciaOrigen"
-                // placeholder="Instancia Origen"
               />
               <Label for="nombreBaseDatosOrigen">Nombre Base de Datos</Label>
               <Input
@@ -93,7 +106,6 @@ class Conexiones extends React.Component {
                 onChange={event => this.setState({ nombreBaseDatosOrigen: event.target.value })}
                 name="nombre-baseOrigen"
                 id="nombreBaseDatosOrigen"
-                // placeholder="Proyecto 2"
               />
               <Label for="puertoOrigen">Puerto</Label>
               <Input
@@ -101,7 +113,6 @@ class Conexiones extends React.Component {
                 onChange={event => this.setState({ puertoOrigen: event.target.value })}
                 name="vpuertoOrigen"
                 id="puertoOrigen"
-                // placeholder="0808"
               />
               <Label for="nombreUsuarioOrigen">Nombre Usuario</Label>
               <Input
@@ -109,7 +120,6 @@ class Conexiones extends React.Component {
                 onChange={event => this.setState({ nombreUsuarioOrigen: event.target.value })}
                 name="nombre-usuarioOrigen"
                 id="nombreUsuarioOrigen"
-                //  placeholder="Crysapa"
               />
               <Label for="passOrigen">Password</Label>
               <Input
@@ -118,10 +128,14 @@ class Conexiones extends React.Component {
                 onChange={event => this.setState({ passOrigen: event.target.value })}
                 name="passwordOrigen"
                 id="passOrigen"
-                // placeholder="123"
               />
             </FormGroup>
-            <Button onClick={this.pruebaOrigen}>[Status] Probar</Button>
+            {!alertOrigen.mostrar ? (<div />) : (
+              <Alert color={alertOrigen.error ? 'danger' : 'success'}>
+                {alertOrigen.mensaje}
+              </Alert>
+            )}
+            <Button onClick={this.pruebaOrigen}>Probar</Button>
           </div>
           <div className="col-md-2" />
           <div className="col-md-3">
@@ -133,7 +147,6 @@ class Conexiones extends React.Component {
                   onChange={event => this.setState({ nombreInstanciaDestino: event.target.value })}
                   name="nombre-instanciaDestino"
                   id="nombreInstanciaDestino"
-                  // placeholder="Instancia Destino"
                 />
                 <Label for="nombreBaseDatosDestino">Nombre Base de Datos</Label>
                 <Input
@@ -141,7 +154,6 @@ class Conexiones extends React.Component {
                   onChange={event => this.setState({ nombreBaseDatosDestino: event.target.value })}
                   name="nombre-baseDestino"
                   id="nombreBaseDatosDestino"
-                  // placeholder="Proyecto 2"
                 />
                 <Label for="puertoDestino">Puerto</Label>
                 <Input
@@ -149,7 +161,6 @@ class Conexiones extends React.Component {
                   onChange={event => this.setState({ puertoDestino: event.target.value })}
                   name="vpuertoDestino"
                   id="puertoDestino"
-                  // placeholder="0808"
                 />
                 <Label for="nombreUsuarioDestino">Nombre Usuario</Label>
                 <Input
@@ -157,7 +168,6 @@ class Conexiones extends React.Component {
                   onChange={event => this.setState({ nombreUsuarioDestino: event.target.value })}
                   name="nombre-usuarioDestino"
                   id="nombreUsuarioDestino"
-                  //  placeholder="Crysapa"
                 />
                 <Label for="passDestino">Password</Label>
                 <Input
@@ -166,10 +176,14 @@ class Conexiones extends React.Component {
                   type="password"
                   name="passwordDestino"
                   id="passDestino"
-                  // placeholder="123"
                 />
-              </FormGroup>
-            <Button onClick={this.pruebaDestino}>[Status] Probar</Button>
+            </FormGroup>
+            {!alertDestino.mostrar ? (<div />) : (
+              <Alert color={alertDestino.error ? 'danger' : 'success'}>
+                {alertDestino.mensaje}
+              </Alert>
+            )}
+            <Button onClick={this.pruebaDestino}>Probar</Button>
           </div>
           <div className="col-md-2" />
         </div>

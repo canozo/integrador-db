@@ -11,7 +11,7 @@ controller.putOrigen = (req, res) => {
   conexion.connect((err) => {
     if (err) {
       console.log('Error conectado a mssql', err);
-      res.json({ error: true, mensaje: err });
+      res.json({ error: true, mensaje: 'Error conectado a mssql' });
       return;
     }
 
@@ -27,7 +27,7 @@ controller.putDestino = (req, res) => {
   conexion.connect(err => {
     if (err) {
       console.log('Error conectado a mysql', err);
-      res.json({ error: true, mensaje: err });
+      res.json({ error: true, mensaje: 'Error conectado a mysql' });
       return;
     }
 
