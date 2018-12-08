@@ -43,7 +43,6 @@ controller.get = (req, res) => {
 
 controller.putOrigen = (req, res) => {
   const conexion = new mssql.ConnectionPool(req.body.config);
-  // const request = new mssql.Request(conexion);
 
   conexion.connect((err) => {
     if (err) {
@@ -52,7 +51,6 @@ controller.putOrigen = (req, res) => {
       return;
     }
 
-    console.log('Conexion establecida con mssql');
     conexiones.mssql = conexion;
     res.json({ error: false, mensaje: 'Conexion establecida con mssql' });
   });
@@ -68,7 +66,6 @@ controller.putDestino = (req, res) => {
       return;
     }
 
-    console.log('Conexion establecida con mysql');
     conexiones.mysql = conexion;
     res.json({ error: false, mensaje: 'Conexion establecida con mysql' });
   });

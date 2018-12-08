@@ -1,6 +1,6 @@
 const requests = {};
 
-requests.putOrigen = (config) => {
+requests.putOrigen = async (config) => {
   return fetch('/api/conexiones/origen', {
     method: 'put',
     headers: {
@@ -12,7 +12,7 @@ requests.putOrigen = (config) => {
     .then(res => res.json());
 };
 
-requests.putDestino = (config) => {
+requests.putDestino = async (config) => {
   return fetch('/api/conexiones/destino', {
     method: 'put',
     headers: {

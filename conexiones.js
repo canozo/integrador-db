@@ -1,4 +1,5 @@
 const conexiones = {
+  replicando: [],
   mysql: undefined,
   mssql: undefined,
 };

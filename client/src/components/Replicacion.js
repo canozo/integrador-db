@@ -11,11 +11,14 @@ class Replicacion extends React.Component {
     this.noReplicar = this.noReplicar.bind(this);
     this.checkearSinReplicar = this.checkearSinReplicar.bind(this);
     this.checkearReplicando = this.checkearReplicando.bind(this);
+    this.guardar = this.guardar.bind(this);
+    this.cancelar = this.cancelar.bind(this);
 
     this.state = {
       trabajando: true,
       error: false,
       mensaje: '',
+      mensajeReplicando: 'Status replicando:',
       noReplicadas: [],
       replicadas: [],
       checkedSinReplicar: {},
@@ -29,6 +32,7 @@ class Replicacion extends React.Component {
           error: res.error,
           mensaje: res.mensaje,
           noReplicadas: res.tablas,
+          replicadas: [],
         });
       });
   }
@@ -89,8 +93,31 @@ class Replicacion extends React.Component {
     });
   }
 
+  guardar() {
+    const { replicadas } = this.state;
+    requests.guardar(replicadas)
+      .then((res) => {
+        this.setState({ mensajeReplicando: res.mensaje });
+      }).catch(() => {});
+  }
+
+  cancelar() {
+    const { noReplicadas, replicadas } = this.state;
+
+    requests.cancelar()
+      .then((res) => {
+        this.setState({
+          mensajeReplicando: res.mensaje,
+          noReplicadas: noReplicadas.concat(replicadas),
+          replicadas: [],
+          checkedSinReplicar: {},
+          checkedReplicando: {},
+        });
+      }).catch(() => {});
+  }
+
   render() {
-    const { trabajando, error, mensaje, replicadas, noReplicadas, checkedReplicando, checkedSinReplicar } = this.state;
+    const { trabajando, error, mensaje, mensajeReplicando, replicadas, noReplicadas, checkedReplicando, checkedSinReplicar } = this.state;
 
     if (trabajando) {
       return (
@@ -164,16 +191,23 @@ class Replicacion extends React.Component {
           <div className="col-md-1" />
         </div>
         <div className="row">
+          <div className="col-md-1" />
+          <div className="col-md-10">
+            <Alert color="primary">{mensajeReplicando}</Alert>
+          </div>
+          <div className="col-md-1" />
+        </div>
+        <div className="row">
           <div className="col-md-4" />
           <div className="col-md-1">
             <FormGroup>
-              <Button>Guardar</Button>
+              <Button onClick={this.guardar}>Guardar</Button>
             </FormGroup>
           </div>
           <div className="col-md-1" />
           <div className="col-md-1">
             <FormGroup>
-              <Button>Cancelar</Button>
+              <Button onClick={this.cancelar}>Cancelar</Button>
             </FormGroup>
           </div>
           <div className="col-md-5" />
