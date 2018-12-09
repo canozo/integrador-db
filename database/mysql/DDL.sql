@@ -8,8 +8,7 @@ USE db_northwind;
 CREATE TABLE `dbo.Categories` (
     `CategoryID` INTEGER NOT NULL AUTO_INCREMENT,
     `CategoryName` VARCHAR(15) NOT NULL,
-    `Description` MEDIUMTEXT,
-    `Picture` LONGBLOB,
+    `Description` VARCHAR(500),
     CONSTRAINT `PK_Categories` PRIMARY KEY (`CategoryID`)
 );
 
@@ -25,7 +24,7 @@ CREATE TABLE `dbo.CustomerCustomerDemo` (
 
 CREATE TABLE `dbo.CustomerDemographics` (
     `CustomerTypeID` VARCHAR(10) NOT NULL,
-    `CustomerDesc` MEDIUMTEXT,
+    `CustomerDesc` VARCHAR(500),
     CONSTRAINT `PK_CustomerDemographics` PRIMARY KEY (`CustomerTypeID`)
 );
 
@@ -37,7 +36,7 @@ CREATE TABLE `dbo.Customers` (
     `ContactTitle` VARCHAR(30),
     `Address` VARCHAR(60),
     `City` VARCHAR(15),
-    `dbo.Region` VARCHAR(15),
+    `Region` VARCHAR(15),
     `PostalCode` VARCHAR(10),
     `Country` VARCHAR(15),
     `Phone` VARCHAR(24),
@@ -51,7 +50,7 @@ CREATE INDEX `CompanyName` ON `dbo.Customers` (`CompanyName`);
 
 CREATE INDEX `PostalCode` ON `dbo.Customers` (`PostalCode`);
 
-CREATE INDEX `dbo.Region` ON `dbo.Customers` (`dbo.Region`);
+CREATE INDEX `Region` ON `dbo.Customers` (`Region`);
 
 
 CREATE TABLE `dbo.Employees` (
@@ -64,16 +63,15 @@ CREATE TABLE `dbo.Employees` (
     `HireDate` DATETIME,
     `Address` VARCHAR(60),
     `City` VARCHAR(15),
-    `dbo.Region` VARCHAR(15),
+    `Region` VARCHAR(15),
     `PostalCode` VARCHAR(10),
     `Country` VARCHAR(15),
     `HomePhone` VARCHAR(24),
     `Extension` VARCHAR(4),
-    `Photo` LONGBLOB,
-    `Notes` MEDIUMTEXT NOT NULL,
+    `Notes` VARCHAR(500) NOT NULL,
     `ReportsTo` INTEGER,
     `PhotoPath` VARCHAR(255),
-     `Salary` FLOAT,
+    `Salary` FLOAT,
     CONSTRAINT `PK_Employees` PRIMARY KEY (`EmployeeID`)
 );
 
@@ -163,12 +161,12 @@ CREATE TABLE `dbo.Suppliers` (
     `ContactTitle` VARCHAR(30),
     `Address` VARCHAR(60),
     `City` VARCHAR(15),
-    `dbo.Region` VARCHAR(15),
+    `Region` VARCHAR(15),
     `PostalCode` VARCHAR(10),
     `Country` VARCHAR(15),
     `Phone` VARCHAR(24),
     `Fax` VARCHAR(24),
-    `HomePage` MEDIUMTEXT,
+    `HomePage` VARCHAR(500),
     CONSTRAINT `PK_Suppliers` PRIMARY KEY (`SupplierID`)
 );
 
