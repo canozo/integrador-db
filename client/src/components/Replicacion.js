@@ -7,8 +7,10 @@ class Replicacion extends React.Component {
     super(props);
     this.props = props;
 
-    this.replicar = this.replicar.bind(this);
-    this.noReplicar = this.noReplicar.bind(this);
+    this.replicarSlc = this.replicarSlc.bind(this);
+    this.replicarTodos = this.replicarTodos.bind(this);
+    this.noReplicarSlc = this.noReplicarSlc.bind(this);
+    this.noReplicarTodos = this.noReplicarTodos.bind(this);
     this.checkearSinReplicar = this.checkearSinReplicar.bind(this);
     this.checkearReplicando = this.checkearReplicando.bind(this);
     this.guardar = this.guardar.bind(this);
@@ -34,7 +36,7 @@ class Replicacion extends React.Component {
           noReplicadas: res.tablas,
           replicadas: [],
         });
-      });
+      }).catch(() => {});
   }
 
   checkearSinReplicar(event) {
@@ -49,12 +51,12 @@ class Replicacion extends React.Component {
     this.setState({ checkedReplicando });
   }
 
-  replicar() {
+  replicarSlc() {
     const { noReplicadas, replicadas, checkedSinReplicar } = this.state;
 
-    let checkedSinReplicarRes = Object.assign({}, checkedSinReplicar);
+    const checkedSinReplicarRes = Object.assign({}, checkedSinReplicar);
     let noReplicadasRes = noReplicadas.slice();
-    let replicadasRes = replicadas.slice();
+    const replicadasRes = replicadas.slice();
 
     for (const key in checkedSinReplicar) {
       if (checkedSinReplicar[key] === true) {
@@ -71,11 +73,22 @@ class Replicacion extends React.Component {
     });
   }
 
-  noReplicar() {
+  replicarTodos() {
+    const { noReplicadas, replicadas } = this.state;
+
+    this.setState({
+      noReplicadas: [],
+      replicadas: replicadas.concat(noReplicadas),
+      checkedSinReplicar: {},
+      checkedReplicando: {},
+    });
+  }
+
+  noReplicarSlc() {
     const { noReplicadas, replicadas, checkedReplicando } = this.state;
 
-    let checkedReplicandoRes = Object.assign({}, checkedReplicando);
-    let noReplicadasRes = noReplicadas.slice();
+    const checkedReplicandoRes = Object.assign({}, checkedReplicando);
+    const noReplicadasRes = noReplicadas.slice();
     let replicadasRes = replicadas.slice();
 
     for (const key in checkedReplicando) {
@@ -90,6 +103,17 @@ class Replicacion extends React.Component {
       noReplicadas: noReplicadasRes,
       replicadas: replicadasRes,
       checkedReplicando: checkedReplicandoRes,
+    });
+  }
+
+  noReplicarTodos() {
+    const { noReplicadas, replicadas } = this.state;
+
+    this.setState({
+      noReplicadas: noReplicadas.concat(replicadas),
+      replicadas: [],
+      checkedSinReplicar: {},
+      checkedReplicando: {},
     });
   }
 
@@ -166,10 +190,16 @@ class Replicacion extends React.Component {
           <div className="col-md-2">
             <h1 style={{ color: '#ffffff' }}>Replicando</h1>
             <FormGroup>
-              <Button onClick={this.replicar}>{'>>'}</Button>
+              <Button onClick={this.replicarSlc}>{'>'}</Button>
             </FormGroup>
             <FormGroup>
-              <Button onClick={this.noReplicar}>{'<<'}</Button>
+              <Button onClick={this.replicarTodos}>{'>>'}</Button>
+            </FormGroup>
+            <FormGroup>
+              <Button onClick={this.noReplicarTodos}>{'<<'}</Button>
+            </FormGroup>
+            <FormGroup>
+              <Button onClick={this.noReplicarSlc}>{'<'}</Button>
             </FormGroup>
           </div>
           <div className="col-md-2" />

@@ -86,7 +86,7 @@ class Conexiones extends React.Component {
         <div className="row">
           <div className="col-md-2" />
           <div className="col-md-3">
-            <h1>Base de Datos Origen</h1>
+            <h1>BD Origen</h1>
             <FormGroup>
               <Label for="nombreInstanciaOrigen">Nombre Instancia</Label>
               <Input
@@ -134,7 +134,7 @@ class Conexiones extends React.Component {
           </div>
           <div className="col-md-2" />
           <div className="col-md-3">
-            <h1>Base de Datos Destino</h1>
+            <h1>BD Destino</h1>
               <FormGroup>
                 <Label for="nombreInstanciaDestino">Nombre Instancia</Label>
                 <Input
