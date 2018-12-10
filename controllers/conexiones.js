@@ -5,7 +5,6 @@ const conexiones = require('../conexiones');
 const controller = {};
 
 controller.get = (req, res) => {
-  // mira si hay conexion, si la hay devuelve todas las tablas de mssql
   if (conexiones.mssql === undefined && conexiones.mysql === undefined) {
     res.json({ error: true, mensaje: 'No esta conectado a SQL Server y MySQL.' });
     return;
@@ -31,11 +30,21 @@ controller.get = (req, res) => {
       console.log(err);
       res.json({ error: true, mensaje: 'Error al obtener informacion de SQL Server.' });
     } else {
-      const tablas = [];
+      const tblNoReplicadas = [];
+      const tblReplicadas = [];
       for (let i = 0; i < result.rowsAffected; i++) {
-        tablas.push(result.recordset[i].tabla);
+        if (conexiones.replicando.includes(result.recordset[i].tabla)) {
+          tblReplicadas.push(result.recordset[i].tabla);
+        } else {
+          tblNoReplicadas.push(result.recordset[i].tabla);
+        }
       }
-      res.json({ error: false, mensaje: 'Esta conectado!', tablas });
+      res.json({
+        error: false,
+        mensaje: 'Esta conectado!',
+        tablas: tblNoReplicadas,
+        replicadas: tblReplicadas
+      });
     }
   });
 

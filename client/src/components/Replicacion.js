@@ -34,7 +34,7 @@ class Replicacion extends React.Component {
           error: res.error,
           mensaje: res.mensaje,
           noReplicadas: res.tablas,
-          replicadas: [],
+          replicadas: res.replicadas,
         });
       }).catch(() => {});
   }

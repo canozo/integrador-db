@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const conexionesRouter = require('./api/conexiones');
 const replicacionRouter = require('./api/replicacion');
+const jobRouter = require('./api/job');
 const app = express();
 
 app.set('views', path.join(__dirname, 'views'));
@@ -18,6 +19,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/conexiones', conexionesRouter);
 app.use('/api/replicacion', replicacionRouter);
+app.use('/api/job', jobRouter);
 
 app.use(function(req, res, next) {
   next(createError(404));

@@ -2,6 +2,7 @@ import React from 'react';
 import Home from './Home';
 import Conexiones from './Conexiones';
 import Replicacion from './Replicacion';
+import Job from './Job';
 import {
   Navbar,
   NavbarBrand,
@@ -34,12 +35,18 @@ class App extends React.Component {
                 <NavLink>Replicacion</NavLink>
               </Link>
             </NavItem>
+            <NavItem>
+              <Link to="/job">
+                <NavLink>Job</NavLink>
+              </Link>
+            </NavItem>
           </Nav>
         </Navbar>
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/conexiones" exact component={Conexiones} />
           <Route path="/replicacion" exact component={Replicacion} />
+          <Route path="/job" exact component={Job} />
           <Route render={() => <h1>Pagina no encontrada!</h1>} />
         </Switch>
       </div>
