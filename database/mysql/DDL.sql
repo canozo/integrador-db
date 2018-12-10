@@ -1,223 +1,105 @@
-﻿DROP DATABASE IF EXISTS db_northwind;
+﻿-- MySQL Workbench Forward Engineering
 
-CREATE DATABASE IF NOT EXISTS db_northwind;
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
-USE db_northwind;
+-- -----------------------------------------------------
+-- Schema db_escuela
+-- -----------------------------------------------------
 
+-- -----------------------------------------------------
+-- Schema db_escuela
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `db_escuela`;
+USE `db_escuela` ;
 
-CREATE TABLE `dbo.Categories` (
-    `CategoryID` INTEGER NOT NULL AUTO_INCREMENT,
-    `CategoryName` VARCHAR(15) NOT NULL,
-    `Description` VARCHAR(500),
-    CONSTRAINT `PK_Categories` PRIMARY KEY (`CategoryID`)
-);
-
-CREATE INDEX `CategoryName` ON `dbo.Categories` (`CategoryName`);
-
-
-CREATE TABLE `dbo.CustomerCustomerDemo` (
-    `CustomerID` VARCHAR(5) NOT NULL,
-    `CustomerTypeID` VARCHAR(10) NOT NULL,
-    CONSTRAINT `PK_CustomerCustomerDemo` PRIMARY KEY (`CustomerID`, `CustomerTypeID`)
-);
-
-
-CREATE TABLE `dbo.CustomerDemographics` (
-    `CustomerTypeID` VARCHAR(10) NOT NULL,
-    `CustomerDesc` VARCHAR(500),
-    CONSTRAINT `PK_CustomerDemographics` PRIMARY KEY (`CustomerTypeID`)
-);
+-- -----------------------------------------------------
+-- Table `db_escuela`.`tbl_persona`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `db_escuela`.`tbl_persona` (
+  `codigo_persona` INT NOT NULL,
+  `nombre` VARCHAR(45) NULL,
+  `apellido` VARCHAR(45) NULL,
+  `fecha_nacimiento` DATE NULL,
+  PRIMARY KEY (`codigo_persona`))
+ENGINE = InnoDB;
 
 
-CREATE TABLE `dbo.Customers` (
-    `CustomerID` VARCHAR(5) NOT NULL,
-    `CompanyName` VARCHAR(40) NOT NULL,
-    `ContactName` VARCHAR(30),
-    `ContactTitle` VARCHAR(30),
-    `Address` VARCHAR(60),
-    `City` VARCHAR(15),
-    `Region` VARCHAR(15),
-    `PostalCode` VARCHAR(10),
-    `Country` VARCHAR(15),
-    `Phone` VARCHAR(24),
-    `Fax` VARCHAR(24),
-    CONSTRAINT `PK_Customers` PRIMARY KEY (`CustomerID`)
-);
-
-CREATE INDEX `City` ON `dbo.Customers` (`City`);
-
-CREATE INDEX `CompanyName` ON `dbo.Customers` (`CompanyName`);
-
-CREATE INDEX `PostalCode` ON `dbo.Customers` (`PostalCode`);
-
-CREATE INDEX `Region` ON `dbo.Customers` (`Region`);
+-- -----------------------------------------------------
+-- Table `db_escuela`.`tbl_estudiantes`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `db_escuela`.`tbl_estudiantes` (
+  `codigo_estudiante` INT NOT NULL AUTO_INCREMENT,
+  `codigo_persona` INT NOT NULL,
+  `numero_cuenta` VARCHAR(45) NULL,
+  PRIMARY KEY (`codigo_estudiante`),
+  UNIQUE INDEX `numero_cuenta_UNIQUE` (`numero_cuenta` ASC) VISIBLE,
+  INDEX `fk_tbl_estudiantes_tbl_persona_idx` (`codigo_persona` ASC) VISIBLE,
+  CONSTRAINT `fk_tbl_estudiantes_tbl_persona`
+    FOREIGN KEY (`codigo_persona`)
+    REFERENCES `db_escuela`.`tbl_persona` (`codigo_persona`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
 
-CREATE TABLE `dbo.Employees` (
-    `EmployeeID` INTEGER NOT NULL AUTO_INCREMENT,
-    `LastName` VARCHAR(20) NOT NULL,
-    `FirstName` VARCHAR(10) NOT NULL,
-    `Title` VARCHAR(30),
-    `TitleOfCourtesy` VARCHAR(25),
-    `BirthDate` DATETIME,
-    `HireDate` DATETIME,
-    `Address` VARCHAR(60),
-    `City` VARCHAR(15),
-    `Region` VARCHAR(15),
-    `PostalCode` VARCHAR(10),
-    `Country` VARCHAR(15),
-    `HomePhone` VARCHAR(24),
-    `Extension` VARCHAR(4),
-    `Notes` VARCHAR(500) NOT NULL,
-    `ReportsTo` INTEGER,
-    `PhotoPath` VARCHAR(255),
-    `Salary` FLOAT,
-    CONSTRAINT `PK_Employees` PRIMARY KEY (`EmployeeID`)
-);
-
-CREATE INDEX `LastName` ON `dbo.Employees` (`LastName`);
-
-CREATE INDEX `PostalCode` ON `dbo.Employees` (`PostalCode`);
+-- -----------------------------------------------------
+-- Table `db_escuela`.`tbl_maestro`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `db_escuela`.`tbl_maestro` (
+  `codigo_maestro` INT NOT NULL,
+  `codigo_persona` INT NOT NULL,
+  `uvs_asignadas` INT NULL,
+  PRIMARY KEY (`codigo_maestro`),
+  INDEX `fk_tbl_maestro_tbl_persona1_idx` (`codigo_persona` ASC) VISIBLE,
+  CONSTRAINT `fk_tbl_maestro_tbl_persona1`
+    FOREIGN KEY (`codigo_persona`)
+    REFERENCES `db_escuela`.`tbl_persona` (`codigo_persona`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
 
-CREATE TABLE `dbo.EmployeeTerritories` (
-    `EmployeeID` INTEGER NOT NULL,
-    `TerritoryID` VARCHAR(20) NOT NULL,
-    CONSTRAINT `PK_EmployeeTerritories` PRIMARY KEY (`EmployeeID`, `TerritoryID`)
-);
+-- -----------------------------------------------------
+-- Table `db_escuela`.`tbl_seccion`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `db_escuela`.`tbl_seccion` (
+  `codigo_seccion` INT NOT NULL,
+  `codigo_maestro` INT NOT NULL,
+  `nombre_clase` VARCHAR(45) NULL,
+  `uvs` INT NULL,
+  PRIMARY KEY (`codigo_seccion`),
+  INDEX `fk_tbl_seccion_tbl_maestro1_idx` (`codigo_maestro` ASC) VISIBLE,
+  CONSTRAINT `fk_tbl_seccion_tbl_maestro1`
+    FOREIGN KEY (`codigo_maestro`)
+    REFERENCES `db_escuela`.`tbl_maestro` (`codigo_maestro`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
 
-CREATE TABLE `dbo.Order Details` (
-    `OrderID` INTEGER NOT NULL,
-    `ProductID` INTEGER NOT NULL,
-    `UnitPrice` DECIMAL(10,4) NOT NULL DEFAULT 0,
-    `Quantity` SMALLINT(2) NOT NULL DEFAULT 1,
-    `Discount` REAL(8,0) NOT NULL DEFAULT 0,
-    CONSTRAINT `PK_OrderDetails` PRIMARY KEY (`OrderID`, `ProductID`)
-);
+-- -----------------------------------------------------
+-- Table `db_escuela`.`tbl_seccionXestudiante`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `db_escuela`.`tbl_seccionXestudiante` (
+  `codigo_seccion` INT NOT NULL,
+  `codigo_estudiante` INT NOT NULL,
+  PRIMARY KEY (`codigo_seccion`, `codigo_estudiante`),
+  INDEX `fk_tbl_seccionXestudiante_tbl_estudiantes1_idx` (`codigo_estudiante` ASC) VISIBLE,
+  CONSTRAINT `fk_tbl_seccionXestudiante_tbl_seccion1`
+    FOREIGN KEY (`codigo_seccion`)
+    REFERENCES `db_escuela`.`tbl_seccion` (`codigo_seccion`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tbl_seccionXestudiante_tbl_estudiantes1`
+    FOREIGN KEY (`codigo_estudiante`)
+    REFERENCES `db_escuela`.`tbl_estudiantes` (`codigo_estudiante`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
 
-CREATE TABLE `dbo.Orders` (
-    `OrderID` INTEGER NOT NULL AUTO_INCREMENT,
-    `CustomerID` VARCHAR(5),
-    `EmployeeID` INTEGER,
-    `OrderDate` DATETIME,
-    `RequiredDate` DATETIME,
-    `ShippedDate` DATETIME,
-    `ShipVia` INTEGER,
-    `Freight` DECIMAL(10,4) DEFAULT 0,
-    `ShipName` VARCHAR(40),
-    `ShipAddress` VARCHAR(60),
-    `ShipCity` VARCHAR(15),
-    `ShipRegion` VARCHAR(15),
-    `ShipPostalCode` VARCHAR(10),
-    `ShipCountry` VARCHAR(15),
-    CONSTRAINT `PK_Orders` PRIMARY KEY (`OrderID`)
-);
-
-CREATE INDEX `OrderDate` ON `dbo.Orders` (`OrderDate`);
-
-CREATE INDEX `ShippedDate` ON `dbo.Orders` (`ShippedDate`);
-
-CREATE INDEX `ShipPostalCode` ON `dbo.Orders` (`ShipPostalCode`);
-
-
-CREATE TABLE `dbo.Products` (
-    `ProductID` INTEGER NOT NULL AUTO_INCREMENT,
-    `ProductName` VARCHAR(40) NOT NULL,
-    `SupplierID` INTEGER,
-    `CategoryID` INTEGER,
-    `QuantityPerUnit` VARCHAR(20),
-    `UnitPrice` DECIMAL(10,4) DEFAULT 0,
-    `UnitsInStock` SMALLINT(2) DEFAULT 0,
-    `UnitsOnOrder` SMALLINT(2) DEFAULT 0,
-    `ReorderLevel` SMALLINT(2) DEFAULT 0,
-    `Discontinued` BIT NOT NULL DEFAULT 0,
-    CONSTRAINT `PK_Products` PRIMARY KEY (`ProductID`)
-);
-
-CREATE INDEX `ProductName` ON `dbo.Products` (`ProductName`);
-
-
-CREATE TABLE `dbo.Region` (
-    `RegionID` INTEGER NOT NULL,
-    `RegionDescription` VARCHAR(50) NOT NULL,
-    CONSTRAINT `PK_Region` PRIMARY KEY (`RegionID`)
-);
-
-
-CREATE TABLE `dbo.Shippers` (
-    `ShipperID` INTEGER NOT NULL AUTO_INCREMENT,
-    `CompanyName` VARCHAR(40) NOT NULL,
-    `Phone` VARCHAR(24),
-    CONSTRAINT `PK_Shippers` PRIMARY KEY (`ShipperID`)
-);
-
-
-CREATE TABLE `dbo.Suppliers` (
-    `SupplierID` INTEGER NOT NULL AUTO_INCREMENT,
-    `CompanyName` VARCHAR(40) NOT NULL,
-    `ContactName` VARCHAR(30),
-    `ContactTitle` VARCHAR(30),
-    `Address` VARCHAR(60),
-    `City` VARCHAR(15),
-    `Region` VARCHAR(15),
-    `PostalCode` VARCHAR(10),
-    `Country` VARCHAR(15),
-    `Phone` VARCHAR(24),
-    `Fax` VARCHAR(24),
-    `HomePage` VARCHAR(500),
-    CONSTRAINT `PK_Suppliers` PRIMARY KEY (`SupplierID`)
-);
-
-CREATE INDEX `CompanyName` ON `dbo.Suppliers` (`CompanyName`);
-
-CREATE INDEX `PostalCode` ON `dbo.Suppliers` (`PostalCode`);
-
-
-CREATE TABLE `dbo.Territories` (
-    `TerritoryID` VARCHAR(20) NOT NULL,
-    `TerritoryDescription` VARCHAR(50) NOT NULL,
-    `RegionID` INTEGER NOT NULL,
-    CONSTRAINT `PK_Territories` PRIMARY KEY (`TerritoryID`)
-);
-
-
-ALTER TABLE `dbo.CustomerCustomerDemo` ADD CONSTRAINT `FK_CustomerCustomerDemo`
-    FOREIGN KEY (`CustomerTypeID`) REFERENCES `dbo.CustomerDemographics` (`CustomerTypeID`);
-
-ALTER TABLE `dbo.CustomerCustomerDemo` ADD CONSTRAINT `FK_CustomerCustomerDemo_Customers`
-    FOREIGN KEY (`CustomerID`) REFERENCES `dbo.Customers` (`CustomerID`);
-
-ALTER TABLE `dbo.Employees` ADD CONSTRAINT `FK_Employees_Employees`
-    FOREIGN KEY (`ReportsTo`) REFERENCES `dbo.Employees` (`EmployeeID`);
-
-ALTER TABLE `dbo.EmployeeTerritories` ADD CONSTRAINT `FK_EmployeeTerritories_Employees`
-    FOREIGN KEY (`EmployeeID`) REFERENCES `dbo.Employees` (`EmployeeID`);
-
-ALTER TABLE `dbo.EmployeeTerritories` ADD CONSTRAINT `FK_EmployeeTerritories_Territories`
-    FOREIGN KEY (`TerritoryID`) REFERENCES `dbo.Territories` (`TerritoryID`);
-
-ALTER TABLE `dbo.Order Details` ADD CONSTRAINT `FK_Order_Details_Orders`
-    FOREIGN KEY (`OrderID`) REFERENCES `dbo.Orders` (`OrderID`);
-
-ALTER TABLE `dbo.Order Details` ADD CONSTRAINT `FK_Order_Details_Products`
-    FOREIGN KEY (`ProductID`) REFERENCES `dbo.Products` (`ProductID`);
-
-ALTER TABLE `dbo.Orders` ADD CONSTRAINT `FK_Orders_Customers`
-    FOREIGN KEY (`CustomerID`) REFERENCES `dbo.Customers` (`CustomerID`);
-
-ALTER TABLE `dbo.Orders` ADD CONSTRAINT `FK_Orders_Employees`
-    FOREIGN KEY (`EmployeeID`) REFERENCES `dbo.Employees` (`EmployeeID`);
-
-ALTER TABLE `dbo.Orders` ADD CONSTRAINT `FK_Orders_Shippers`
-    FOREIGN KEY (`ShipVia`) REFERENCES `dbo.Shippers` (`ShipperID`);
-
-ALTER TABLE `dbo.Products` ADD CONSTRAINT `FK_Products_Categories`
-    FOREIGN KEY (`CategoryID`) REFERENCES `dbo.Categories` (`CategoryID`);
-
-ALTER TABLE `dbo.Products` ADD CONSTRAINT `FK_Products_Suppliers`
-    FOREIGN KEY (`SupplierID`) REFERENCES `dbo.Suppliers` (`SupplierID`);
-
-ALTER TABLE `dbo.Territories` ADD CONSTRAINT `FK_Territories_Region`
-    FOREIGN KEY (`RegionID`) REFERENCES `dbo.Region` (`RegionID`);
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
