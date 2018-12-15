@@ -177,8 +177,9 @@ BEGIN
     FROM DELETED
     select @persona = CAST(@ncodigo_persona as varchar(10))
 
-    SET @StrDelete = 'DELETE FROM tbl_persona where codigo_persona = '+@persona');';
+    SET @StrDelete = 'DELETE FROM tbl_persona where codigo_persona = '+@persona+');';
     INSERT INTO dbo.Bitacora VALUES (2, @StrDelete, 2);
+END
 
 
 --Delete maestro
@@ -198,9 +199,9 @@ BEGIN
     FROM DELETED
     select @maestro = CAST(@ncodigo_maestro as varchar(10))
 
-    SET @StrDelete = 'DELETE FROM tbl_maestro where codigo_maestro = '+@maestro');';
+    SET @StrDelete = 'DELETE FROM tbl_maestro where codigo_maestro = '+@maestro+');';
     INSERT INTO dbo.Bitacora VALUES (2, @StrDelete, 2);
-
+END
 
 --delete seccion
 CREATE TRIGGER delete_seccion
@@ -219,9 +220,9 @@ BEGIN
     FROM DELETED
     select @seccion = CAST(@ncodigo_seccion as varchar(10))
 
-    SET @StrDelete = 'DELETE FROM tbl_seccion where codigo_seccion = '+@seccion');';
+    SET @StrDelete = 'DELETE FROM tbl_seccion where codigo_seccion = '+@seccion+');';
     INSERT INTO dbo.Bitacora VALUES (2, @StrDelete, 2);
-
+END
 
 -- delete estudiante
 CREATE TRIGGER delete_estudiante
@@ -240,9 +241,9 @@ BEGIN
     FROM DELETED
     select @estudiante = CAST(@ncodigo_estudiante as varchar(10))
 
-    SET @StrDelete = 'DELETE FROM tbl_estudiantes where codigo_estudiante = '+@estudiante');';
+    SET @StrDelete = 'DELETE FROM tbl_estudiantes where codigo_estudiante = '+@estudiante+');';
     INSERT INTO dbo.Bitacora VALUES (2, @StrDelete, 2);
-
+END
 
 --delete seccionXestdiante ??
 
@@ -253,25 +254,25 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    DECLARE @StrDelete varchar(200),
-    @ncodigo_seccion int,
-    @ncodigo_estudiante int,
-    @estudiante varchar(15),
-    @seccion varchar(15)
-    ;
+        DECLARE @StrDelete varchar(200),
+        @ncodigo_seccion int,
+        @ncodigo_estudiante int,
+        @estudiante varchar(15),
+        @seccion varchar(15)
+        ;
 
-    SELECT @ncodigo_seccion = DELETED.codigo_seccion      
-    FROM DELETED
-    select @seccion = CAST(@ncodigo_seccion as varchar(10))
+        SELECT @ncodigo_seccion = DELETED.codigo_seccion      
+        FROM DELETED
+        select @seccion = CAST(@ncodigo_seccion as varchar(10))
 
-    SELECT @ncodigo_estudiante = DELETED.codigo_estudiante      
-    FROM DELETED
-    select @estudiante = CAST(@ncodigo_estudiante as varchar(10))
+        SELECT @ncodigo_estudiante = DELETED.codigo_estudiante      
+        FROM DELETED
+        select @estudiante = CAST(@ncodigo_estudiante as varchar(10))
 
 
-    SET @StrDelete = 'DELETE FROM tbl_seccionXestudiante where codigo_seccion = '+@seccion +', and codigo_estudiante = '+ @estudiante+' );';
-    INSERT INTO dbo.Bitacora VALUES (2, @StrDelete, 2);
-
+        SET @StrDelete = 'DELETE FROM tbl_seccionXestudiante where codigo_seccion = '+@seccion +', and codigo_estudiante = '+ @estudiante+' );';
+        INSERT INTO dbo.Bitacora VALUES (2, @StrDelete, 2);
+        END
 
 --update persona
 CREATE TRIGGER update_persona
@@ -307,6 +308,7 @@ SET @StrInsert = 'UPDATE tbl_persona values set nombre = '+@nnombre + ', apellid
                   where codigo_persona = '+ @persona2+';';
 
 INSERT INTO dbo.Bitacora VALUES (2, @StrInsert, 2);
+END
 
 
 --update maestro
@@ -338,12 +340,13 @@ select @unidades = CAST(@nuvs_asignadas as varchar(25))
 SET @StrInsert = 'UPDATE tbl_maestro values set uvs_asignadas = '+@unidades +'where codigo_persona = '+ @persona2+';';
 
 INSERT INTO dbo.Bitacora VALUES (2, @StrInsert, 2);
+END
 
 
 --update secciones
 
 CREATE TRIGGER update_secciones
-       ON tbl_secciones
+       ON tbl_seccion
 AFTER UPDATE
 AS
 BEGIN
@@ -376,6 +379,7 @@ SET @StrInsert = 'UPDATE tbl_secciones set uvs = '+@unidades+',  codigo_maestro 
 
 INSERT INTO dbo.Bitacora VALUES (2, @StrInsert, 2);
 
+END
 --update estudiantes
 
 
@@ -408,3 +412,4 @@ SET @StrInsert = 'UPDATE tbl_estudiantes set numero_cuenta = '+@nnumero_cuenta+'
 
 
 INSERT INTO dbo.Bitacora VALUES (2, @StrInsert, 2);
+END
