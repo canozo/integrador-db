@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `db_escuela`.`tbl_estudiantes` (
     FOREIGN KEY (`codigo_persona`)
     REFERENCES `db_escuela`.`tbl_persona` (`codigo_persona`)
     ON DELETE CASCADE
-    ON UPDATE NO ACTION)
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `db_escuela`.`tbl_maestro` (
     FOREIGN KEY (`codigo_persona`)
     REFERENCES `db_escuela`.`tbl_persona` (`codigo_persona`)
     ON DELETE CASCADE
-    ON UPDATE NO ACTION)
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS `db_escuela`.`tbl_seccion` (
     FOREIGN KEY (`codigo_maestro`)
     REFERENCES `db_escuela`.`tbl_maestro` (`codigo_maestro`)
     ON DELETE CASCADE
-    ON UPDATE NO ACTION)
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -91,12 +91,12 @@ CREATE TABLE IF NOT EXISTS `db_escuela`.`tbl_seccionXestudiante` (
     FOREIGN KEY (`codigo_seccion`)
     REFERENCES `db_escuela`.`tbl_seccion` (`codigo_seccion`)
     ON DELETE CASCADE
-    ON UPDATE NO ACTION,
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_tbl_seccionXestudiante_tbl_estudiantes1`
     FOREIGN KEY (`codigo_estudiante`)
     REFERENCES `db_escuela`.`tbl_estudiantes` (`codigo_estudiante`)
     ON DELETE CASCADE
-    ON UPDATE NO ACTION)
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
