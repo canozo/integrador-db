@@ -28,7 +28,7 @@ FROM INSERTED;
 
 SELECT @fecha2 = LEFT(CONVERT(VARCHAR, @nfecha_nacimiento, 120), 10)
 
-SET @StrInsert = 'INSERT INTO tbl_persona values(`' @persona2 + '`, `'+ @nnombre + '`, `'+ @napellido + '`, `'+ @fecha2 +'`);';
+SET @StrInsert = 'INSERT INTO tbl_persona(codigo_persona ,nombre, apellido, fecha_nacimiento)  values(`' @persona2 + '`, `'+ @nnombre + '`, `'+ @napellido + '`, `'+ @fecha2 +'`);';
 
 INSERT INTO dbo.Bitacora VALUES ( @StrInsert);
 
@@ -61,7 +61,7 @@ SELECT @ncodigo_persona = INSERTED.codigo_persona
 FROM INSERTED;
 select @persona2 = CAST(@ncodigo_persona as varchar(10))
 
-SET @StrInsert = 'INSERT INTO tbl_maestro values(`'@maestro+'`, `'+@persona2 + '`, `'+ @unidades+'`);';
+SET @StrInsert = 'INSERT INTO tbl_maestro (codigo_maestro, codigo_persona, uvs_asignadas) values(`'@maestro+'`, `'+@persona2 + '`, `'+ @unidades+'`);';
 
 INSERT INTO dbo.Bitacora VALUES ( @StrInsert);
 
@@ -97,7 +97,7 @@ SELECT @ncodigo_maestro = INSERTED.codigo_maestro
 FROM INSERTED;
 select @maestro = CAST(@ncodigo_maestro as varchar(10))
 
-SET @StrInsert = 'INSERT INTO tbl_secciones values(`'@seccion+'`, `'+@maestro + '`, `'+ @nnombre_clase+ '`, `'+ @unidades+'`);';
+SET @StrInsert = 'INSERT INTO tbl_secciones (codigo_seccion, codigo_maestro, nombre_clase, uvs) values(`'@seccion+'`, `'+@maestro + '`, `'+ @nnombre_clase+ '`, `'+ @unidades+'`);';
 
 INSERT INTO dbo.Bitacora VALUES ( @StrInsert);
 
@@ -126,7 +126,7 @@ SELECT @ncodigo_estudiante = INSERTED.codigo_estudiante
 FROM INSERTED;
 select @estudiante = CAST(@ncodigo_estudiante as varchar(10))
 
-SET @StrInsert = 'INSERT INTO tbl_estudiantes values(`'@estudiante+'`, `'+@persona + '`, `'+ @nnumero_cuenta+'`);';
+SET @StrInsert = 'INSERT INTO tbl_estudiantes (codigo_estudiante, codigo_persona, numero_cuenta) values(`'@estudiante+'`, `'+@persona + '`, `'+ @nnumero_cuenta+'`);';
 
 INSERT INTO dbo.Bitacora VALUES ( @StrInsert);
 
@@ -152,7 +152,7 @@ SELECT @ncodigo_seccion = INSERTED.codigo_seccion
 FROM INSERTED;
 select @seccion = CAST(@ncodigo_seccion as varchar(10))
 
-SET @StrInsert = 'INSERT INTO tbl_seccionXestudiante values(`'@seccion+'`, `'+@estudiante +'`);';
+SET @StrInsert = 'INSERT INTO tbl_seccionXestudiante(codigo_seccion, codigo_estudiante) values(`'@seccion+'`, `'+@estudiante +'`);';
 
 INSERT INTO dbo.Bitacora VALUES ( @StrInsert);
 
