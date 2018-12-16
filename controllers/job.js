@@ -20,7 +20,7 @@ controller.put = (req, res) => {
         job.working = true;
         const msReq = new mssql.Request(conexiones.mssql);
 
-        msReq.query('select * from dbo.Bitacora', (err, result) => {
+        msReq.query('select * from .Bitacora', (err, result) => {
           console.log(err, result);
         });
 
