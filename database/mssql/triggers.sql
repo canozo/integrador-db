@@ -117,10 +117,6 @@ DECLARE @StrInsert varchar(200),
         @estudiante varchar(15)
 ;
 
-SELECT @ncodigo_persona = INSERTED.codigo_persona
-FROM INSERTED;
-select @persona = CAST(@ncodigo_persona as varchar(10))
-
 SELECT @nnumero_cuenta = INSERTED.numero_cuenta
 FROM INSERTED;
 
