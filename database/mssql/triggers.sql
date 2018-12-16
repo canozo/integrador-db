@@ -111,20 +111,26 @@ AFTER INSERT
 AS
 
 DECLARE @StrInsert varchar(200),
+        @ncodigo_persona int,
         @ncodigo_estudiante int,
         @persona varchar(15),
         @nnumero_cuenta nchar(25),
-        @estudiante varchar(15)
+        @estudiante varchar(15),
+        @persona2 varchar(15)
 ;
 
-SELECT @nnumero_cuenta = INSERTED.numero_cuenta
+SELECT @ncodigo_persona = INSERTED.codigo_persona
 FROM INSERTED;
+select @persona2 = CAST(@ncodigo_persona as varchar(10))
+
+SELECT @nnumero_cuenta = INSERTED.numero_cuenta
+FROM INSERTED;  
 
 SELECT @ncodigo_estudiante = INSERTED.codigo_estudiante
 FROM INSERTED;
 select @estudiante = CAST(@ncodigo_estudiante as varchar(10))
 
-SET @StrInsert = 'INSERT INTO tbl_estudiantes (codigo_estudiante, codigo_persona, numero_cuenta) values(`'+@estudiante+'`, `'+@persona + '`, `'+ @nnumero_cuenta+'`);';
+SET @StrInsert = 'INSERT INTO tbl_estudiantes (codigo_estudiante, codigo_persona, numero_cuenta) values(`'+@estudiante+'`, `'+@persona2 + '`, `'+ @nnumero_cuenta+'`);';
 
 INSERT INTO dbo.Bitacora VALUES ( @StrInsert);
 GO
@@ -151,7 +157,11 @@ SELECT @ncodigo_seccion = INSERTED.codigo_seccion
 FROM INSERTED;
 select @seccion = CAST(@ncodigo_seccion as varchar(10))
 
-SET @StrInsert = 'INSERT INTO tbl_seccionXestudiante(codigo_seccion, codigo_estudiante) values(`' +@seccion+'`, `'+@estudiante +'`);';
+<<<<<<< HEAD
+SET @StrInsert = 'INSERT INTO tbl_seccionXestudiante values(`'+@seccion+'`, `'+@estudiante +'`);';
+=======
+SET @StrInsert = 'INSERT INTO tbl_seccionXestudiante(codigo_seccion, codigo_estudiante) values(`'@seccion+'`, `'+@estudiante +'`);';
+>>>>>>> 220f54ddfe9f7d7e48d834194f97fc5bb15045cc
 
 INSERT INTO dbo.Bitacora VALUES ( @StrInsert);
 GO
