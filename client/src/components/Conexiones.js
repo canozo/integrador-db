@@ -12,13 +12,13 @@ class Conexiones extends React.Component {
 
     this.state = {
       nombreInstanciaOrigen: 'LAPTOP-U87EPQIM',
-      nombreBaseDatosOrigen: 'Northwind',
+      nombreBaseDatosOrigen: 'db_escuela',
       puertoOrigen: '1433',
       nombreUsuarioOrigen: 'sa',
       passOrigen: 'password',
       alertOrigen: { mostrar: false, error: false, mensaje: '' },
       nombreInstanciaDestino: 'localhost',
-      nombreBaseDatosDestino: 'db_northwind',
+      nombreBaseDatosDestino: 'db_escuela',
       puertoDestino: '3306',
       nombreUsuarioDestino: 'root',
       passDestino: 'password',

@@ -11,6 +11,7 @@ class Job extends React.Component {
     this.handleJob = this.handleJob.bind(this);
 
     this.state = {
+      enabled: false,
       trabajando: true,
       error: false,
       mensaje: '',
@@ -26,17 +27,22 @@ class Job extends React.Component {
           tablas: res.replicadas,
         });
       }).catch(() => {});
+
+    requests.get()
+      .then((res) => {
+        this.setState({ enabled: res.enabled });
+      });
   }
 
   handleJob() {
     requests.put()
       .then((res) => {
-        console.log(res);
+        this.setState({ enabled: res.enabled });
       }).catch(() => {});
   }
 
   render() {
-    const { trabajando, error, mensaje, tablas, } = this.state;
+    const { trabajando, error, mensaje, tablas, enabled, } = this.state;
 
     if (trabajando) {
       return (
@@ -74,7 +80,7 @@ class Job extends React.Component {
           <div className="col-md-1" />
         </div>
         <div className="text-center">
-          <Button onClick={this.handleJob}>Job</Button>
+          <Button disabled={enabled} onClick={this.handleJob}>Job</Button>
         </div>
       </div>
     );

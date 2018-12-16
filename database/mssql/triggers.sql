@@ -1,5 +1,5 @@
---TODO agregar comillas
---agregar personas
+-- agregar personas
+GO
 CREATE TRIGGER agregar_persona
 ON dbo.tbl_persona
 AFTER INSERT
@@ -13,28 +13,28 @@ DECLARE @StrInsert varchar(200),
         @fecha2 varchar(40)
 ;
 
-SELECT @ncodigo_persona = INSERTED.codigo_persona  
+SELECT @ncodigo_persona = INSERTED.codigo_persona
 FROM INSERTED;
 select @persona2 = CAST(@ncodigo_persona as varchar(10))
 
-SELECT @nnombre = INSERTED.nombre 
+SELECT @nnombre = INSERTED.nombre
 FROM INSERTED;
 
-SELECT @napellido = INSERTED.apellido 
+SELECT @napellido = INSERTED.apellido
 FROM INSERTED;
 
-SELECT @nfecha_nacimiento = INSERTED.fecha_nacimiento 
+SELECT @nfecha_nacimiento = INSERTED.fecha_nacimiento
 FROM INSERTED;
 
 SELECT @fecha2 = LEFT(CONVERT(VARCHAR, @nfecha_nacimiento, 120), 10)
 
-SET @StrInsert = 'INSERT INTO tbl_persona values(`' @persona2 + '`, `'+ @nnombre + '`, `'+ @napellido + '`, `'+ @fecha2 +'`);';
+SET @StrInsert = 'INSERT INTO tbl_persona values(`' + @persona2 + '`, `'+ @nnombre + '`, `'+ @napellido + '`, `'+ @fecha2 +'`);';
 
 INSERT INTO dbo.Bitacora VALUES ( @StrInsert);
+GO
 
-
-
---agregar maestro
+-- agregar maestro
+GO
 CREATE TRIGGER agregar_maestro
 ON dbo.tbl_maestro
 AFTER INSERT
@@ -49,24 +49,25 @@ DECLARE @StrInsert varchar(200),
         @persona2 varchar(25)
 ;
 
-SELECT @ncodigo_maestro = INSERTED.codigo_maestro  
+SELECT @ncodigo_maestro = INSERTED.codigo_maestro
 FROM INSERTED;
 select @maestro = CAST(@ncodigo_maestro as varchar(10))
 
-SELECT @nuvs_asignadas = INSERTED.uvs_asignadas 
+SELECT @nuvs_asignadas = INSERTED.uvs_asignadas
 FROM INSERTED;
 select @unidades = CAST(@nuvs_asignadas as varchar(10))
 
-SELECT @ncodigo_persona = INSERTED.codigo_persona 
+SELECT @ncodigo_persona = INSERTED.codigo_persona
 FROM INSERTED;
 select @persona2 = CAST(@ncodigo_persona as varchar(10))
 
-SET @StrInsert = 'INSERT INTO tbl_maestro values(`'@maestro+'`, `'+@persona2 + '`, `'+ @unidades+'`);';
+SET @StrInsert = 'INSERT INTO tbl_maestro values(`' +@maestro+'`, `'+@persona2 + '`, `'+ @unidades+'`);';
 
 INSERT INTO dbo.Bitacora VALUES ( @StrInsert);
+GO
 
-
---agregar seccion
+-- agregar seccion
+GO
 CREATE TRIGGER agregar_seccion
 ON dbo.tbl_seccion
 AFTER INSERT
@@ -82,27 +83,28 @@ DECLARE @StrInsert varchar(200),
         @maestro varchar(15)
 ;
 
-SELECT @ncodigo_seccion = INSERTED.codigo_seccion  
+SELECT @ncodigo_seccion = INSERTED.codigo_seccion
 FROM INSERTED;
 select @seccion = CAST(@ncodigo_seccion as varchar(10))
 
-SELECT @nuvs = INSERTED.uvs 
+SELECT @nuvs = INSERTED.uvs
 FROM INSERTED;
 select @unidades = CAST(@nuvs as varchar(10))
 
-SELECT @nnombre_clase = INSERTED.nombre_clase 
+SELECT @nnombre_clase = INSERTED.nombre_clase
 FROM INSERTED;
 
-SELECT @ncodigo_maestro = INSERTED.codigo_maestro  
+SELECT @ncodigo_maestro = INSERTED.codigo_maestro
 FROM INSERTED;
 select @maestro = CAST(@ncodigo_maestro as varchar(10))
 
-SET @StrInsert = 'INSERT INTO tbl_secciones values(`'@seccion+'`, `'+@maestro + '`, `'+ @nnombre_clase+ '`, `'+ @unidades+'`);';
+SET @StrInsert = 'INSERT INTO tbl_secciones values(`'+@seccion+'`, `'+@maestro + '`, `'+ @nnombre_clase+ '`, `'+ @unidades+'`);';
 
 INSERT INTO dbo.Bitacora VALUES ( @StrInsert);
+GO
 
-
---agregar estudiante
+-- agregar estudiante
+GO
 CREATE TRIGGER agregar_estudiante
 ON dbo.tbl_estudiantes
 AFTER INSERT
@@ -115,23 +117,24 @@ DECLARE @StrInsert varchar(200),
         @estudiante varchar(15)
 ;
 
-SELECT @ncodigo_persona = INSERTED.codigo_persona  
+SELECT @ncodigo_persona = INSERTED.codigo_persona
 FROM INSERTED;
 select @persona = CAST(@ncodigo_persona as varchar(10))
 
-SELECT @nnumero_cuenta = INSERTED.numero_cuenta 
+SELECT @nnumero_cuenta = INSERTED.numero_cuenta
 FROM INSERTED;
 
-SELECT @ncodigo_estudiante = INSERTED.codigo_estudiante 
+SELECT @ncodigo_estudiante = INSERTED.codigo_estudiante
 FROM INSERTED;
 select @estudiante = CAST(@ncodigo_estudiante as varchar(10))
 
-SET @StrInsert = 'INSERT INTO tbl_estudiantes values(`'@estudiante+'`, `'+@persona + '`, `'+ @nnumero_cuenta+'`);';
+SET @StrInsert = 'INSERT INTO tbl_estudiantes values(`'+@estudiante+'`, `'+@persona + '`, `'+ @nnumero_cuenta+'`);';
 
 INSERT INTO dbo.Bitacora VALUES ( @StrInsert);
+GO
 
-
---agregar seccion X estudiante
+-- agregar seccion X estudiante
+GO
 CREATE TRIGGER agregar_seccionXestudiante
 ON dbo.tbl_seccionXestudiante
 AFTER INSERT
@@ -144,23 +147,21 @@ DECLARE @StrInsert varchar(200),
         @estudiante varchar(10)
 ;
 
-SELECT @ncodigo_estudiante = INSERTED.codigo_estudiante 
+SELECT @ncodigo_estudiante = INSERTED.codigo_estudiante
 FROM INSERTED;
 select @estudiante = CAST(@ncodigo_estudiante as varchar(10))
 
-SELECT @ncodigo_seccion = INSERTED.codigo_seccion  
+SELECT @ncodigo_seccion = INSERTED.codigo_seccion
 FROM INSERTED;
 select @seccion = CAST(@ncodigo_seccion as varchar(10))
 
-SET @StrInsert = 'INSERT INTO tbl_seccionXestudiante values(`'@seccion+'`, `'+@estudiante +'`);';
+SET @StrInsert = 'INSERT INTO tbl_seccionXestudiante values(`'+@seccion+'`, `'+@estudiante +'`);';
 
 INSERT INTO dbo.Bitacora VALUES ( @StrInsert);
-
-
-
+GO
 
 -- DELETE persona
-
+GO
 CREATE TRIGGER delete_persona
 ON dbo.tbl_persona
 AFTER DELETE
@@ -173,16 +174,17 @@ BEGIN
     @persona VARCHAR(10)
     ;
 
-    SELECT @ncodigo_persona = DELETED.codigo_persona       
+    SELECT @ncodigo_persona = DELETED.codigo_persona
     FROM DELETED
     select @persona = CAST(@ncodigo_persona as varchar(10))
 
     SET @StrDelete = 'DELETE FROM tbl_persona where codigo_persona = `'+@persona+'`);';
     INSERT INTO dbo.Bitacora VALUES ( @StrDelete);
 END
+GO
 
-
---Delete maestro
+-- Delete maestro
+GO
 CREATE TRIGGER delete_maestro
 ON dbo.tbl_maestro
 AFTER DELETE
@@ -195,15 +197,17 @@ BEGIN
     @maestro varchar(25)
     ;
 
-    SELECT @ncodigo_maestro = DELETED.codigo_maestro       
+    SELECT @ncodigo_maestro = DELETED.codigo_maestro
     FROM DELETED
     select @maestro = CAST(@ncodigo_maestro as varchar(10))
 
     SET @StrDelete = 'DELETE FROM tbl_maestro where codigo_maestro = `'+@maestro+'`);';
     INSERT INTO dbo.Bitacora VALUES ( @StrDelete);
 END
+GO
 
---delete seccion
+-- delete seccion
+GO
 CREATE TRIGGER delete_seccion
 ON dbo.tbl_seccion
 AFTER DELETE
@@ -216,15 +220,17 @@ BEGIN
      @seccion varchar(15)
     ;
 
-    SELECT @ncodigo_seccion = DELETED.codigo_seccion       
+    SELECT @ncodigo_seccion = DELETED.codigo_seccion
     FROM DELETED
     select @seccion = CAST(@ncodigo_seccion as varchar(10))
 
     SET @StrDelete = 'DELETE FROM tbl_seccion where codigo_seccion = `'+@seccion+'`);';
     INSERT INTO dbo.Bitacora VALUES ( @StrDelete);
 END
+GO
 
 -- delete estudiante
+GO
 CREATE TRIGGER delete_estudiante
 ON dbo.tbl_estudiantes
 AFTER DELETE
@@ -237,16 +243,17 @@ BEGIN
      @estudiante varchar(15)
     ;
 
-    SELECT @ncodigo_estudiante = DELETED.codigo_estudiante       
+    SELECT @ncodigo_estudiante = DELETED.codigo_estudiante
     FROM DELETED
     select @estudiante = CAST(@ncodigo_estudiante as varchar(10))
 
     SET @StrDelete = 'DELETE FROM tbl_estudiantes where codigo_estudiante = `'+@estudiante+'`);';
     INSERT INTO dbo.Bitacora VALUES ( @StrDelete);
 END
+GO
 
---delete seccionXestdiante ??
-
+-- delete seccionXestdiante ??
+GO
 CREATE TRIGGER delete_seccionXestudiante
 ON dbo.tbl_seccionXestudiante
 AFTER DELETE
@@ -261,11 +268,11 @@ BEGIN
         @seccion varchar(15)
         ;
 
-        SELECT @ncodigo_seccion = DELETED.codigo_seccion      
+        SELECT @ncodigo_seccion = DELETED.codigo_seccion
         FROM DELETED
         select @seccion = CAST(@ncodigo_seccion as varchar(10))
 
-        SELECT @ncodigo_estudiante = DELETED.codigo_estudiante      
+        SELECT @ncodigo_estudiante = DELETED.codigo_estudiante
         FROM DELETED
         select @estudiante = CAST(@ncodigo_estudiante as varchar(10))
 
@@ -273,8 +280,10 @@ BEGIN
         SET @StrDelete = 'DELETE FROM tbl_seccionXestudiante where codigo_seccion = `'+@seccion +'`, and codigo_estudiante = `'+ @estudiante+'` );';
         INSERT INTO dbo.Bitacora VALUES ( @StrDelete);
         END
+GO
 
---update persona
+-- update persona
+GO
 CREATE TRIGGER update_persona
        ON tbl_persona
 AFTER UPDATE
@@ -290,17 +299,17 @@ DECLARE @StrInsert varchar(200),
         @fecha2 varchar(25)
 ;
 
-SELECT @ncodigo_persona = INSERTED.codigo_persona  
+SELECT @ncodigo_persona = INSERTED.codigo_persona
 FROM INSERTED;
 select @persona2 = CAST(@ncodigo_persona as varchar(25))
 
-SELECT @nnombre = INSERTED.nombre 
+SELECT @nnombre = INSERTED.nombre
 FROM INSERTED;
 
-SELECT @napellido = INSERTED.apellido 
+SELECT @napellido = INSERTED.apellido
 FROM INSERTED;
 
-SELECT @nfecha_nacimiento = INSERTED.fecha_nacimiento 
+SELECT @nfecha_nacimiento = INSERTED.fecha_nacimiento
 FROM INSERTED;
 SELECT @fecha2 = LEFT(CONVERT(VARCHAR, @nfecha_nacimiento, 120), 10)
 
@@ -309,10 +318,10 @@ SET @StrInsert = 'UPDATE tbl_persona values set nombre = `'+@nnombre + '`, apell
 
 INSERT INTO dbo.Bitacora VALUES (@StrInsert);
 END
+GO
 
-
---update maestro
-
+-- update maestro
+GO
 CREATE TRIGGER update_maestro
        ON tbl_maestro
 AFTER UPDATE
@@ -328,23 +337,22 @@ DECLARE @StrInsert varchar(200),
         @persona2 varchar(25)
 ;
 
-SELECT @ncodigo_persona = INSERTED.codigo_persona  
+SELECT @ncodigo_persona = INSERTED.codigo_persona
 FROM INSERTED;
 select @persona2 = CAST(@ncodigo_persona as varchar(25))
 
-SELECT @nuvs_asignadas = INSERTED.uvs_asignadas 
+SELECT @nuvs_asignadas = INSERTED.uvs_asignadas
 FROM INSERTED;
 select @unidades = CAST(@nuvs_asignadas as varchar(25))
-
 
 SET @StrInsert = 'UPDATE tbl_maestro values set uvs_asignadas = `'+@unidades +'` where codigo_persona = `'+ @persona2+'`;';
 
 INSERT INTO dbo.Bitacora VALUES (@StrInsert);
 END
+GO
 
-
---update secciones
-
+-- update secciones
+GO
 CREATE TRIGGER update_secciones
        ON tbl_seccion
 AFTER UPDATE
@@ -360,18 +368,18 @@ DECLARE @StrInsert varchar(200),
         @maestro varchar(15)
 ;
 
-SELECT @ncodigo_seccion = INSERTED.codigo_seccion  
+SELECT @ncodigo_seccion = INSERTED.codigo_seccion
 FROM INSERTED;
 select @seccion = CAST(@ncodigo_seccion as varchar(15))
 
-SELECT @nuvs = INSERTED.uvs 
+SELECT @nuvs = INSERTED.uvs
 FROM INSERTED;
 select @unidades = CAST(@nuvs as varchar(10))
 
-SELECT @nnombre_clase = INSERTED.nombre_clase 
+SELECT @nnombre_clase = INSERTED.nombre_clase
 FROM INSERTED;
 
-SELECT @ncodigo_maestro = INSERTED.codigo_maestro  
+SELECT @ncodigo_maestro = INSERTED.codigo_maestro
 FROM INSERTED;
 select @maestro = CAST(@ncodigo_maestro as varchar(10))
 
@@ -380,9 +388,10 @@ SET @StrInsert = 'UPDATE tbl_secciones set uvs = `'+@unidades+'`,  codigo_maestr
 INSERT INTO dbo.Bitacora VALUES (@StrInsert);
 
 END
---update estudiantes
+GO
 
-
+-- update estudiantes
+GO
 CREATE TRIGGER update_estudiante
        ON tbl_estudiantes
 AFTER UPDATE
@@ -396,18 +405,15 @@ DECLARE @StrInsert varchar(200),
         @estudiante varchar(15)
 ;
 
-SELECT @nnumero_cuenta = INSERTED.numero_cuenta 
+SELECT @nnumero_cuenta = INSERTED.numero_cuenta
 FROM INSERTED;
 
-SELECT @ncodigo_estudiante = INSERTED.codigo_estudiante 
+SELECT @ncodigo_estudiante = INSERTED.codigo_estudiante
 FROM INSERTED;
 select @estudiante = CAST(@ncodigo_estudiante as varchar(10))
 
-
 SET @StrInsert = 'UPDATE tbl_estudiantes set numero_cuenta = `'+@nnumero_cuenta+'` where codigo_estudiante = `'+@estudiante+'`;';
 
-
 INSERT INTO dbo.Bitacora VALUES ( @StrInsert);
-
-
 END
+GO

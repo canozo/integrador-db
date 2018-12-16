@@ -33,6 +33,10 @@ controller.get = (req, res) => {
       const tblNoReplicadas = [];
       const tblReplicadas = [];
       for (let i = 0; i < result.rowsAffected; i++) {
+        if (result.recordset[i].tabla === 'Bitacora') {
+          continue;
+        }
+
         if (conexiones.replicando.includes(result.recordset[i].tabla)) {
           tblReplicadas.push(result.recordset[i].tabla);
         } else {
