@@ -34,12 +34,12 @@ CREATE TABLE IF NOT EXISTS `db_escuela`.`tbl_estudiantes` (
   `codigo_persona` INT NOT NULL,
   `numero_cuenta` VARCHAR(45) NULL,
   PRIMARY KEY (`codigo_estudiante`),
-  UNIQUE INDEX `numero_cuenta_UNIQUE` (`numero_cuenta` ASC) VISIBLE,
-  INDEX `fk_tbl_estudiantes_tbl_persona_idx` (`codigo_persona` ASC) VISIBLE,
+  UNIQUE INDEX `numero_cuenta_UNIQUE` (`numero_cuenta` ASC) ,
+  INDEX `fk_tbl_estudiantes_tbl_persona_idx` (`codigo_persona` ASC) ,
   CONSTRAINT `fk_tbl_estudiantes_tbl_persona`
     FOREIGN KEY (`codigo_persona`)
     REFERENCES `db_escuela`.`tbl_persona` (`codigo_persona`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS `db_escuela`.`tbl_maestro` (
   `codigo_persona` INT NOT NULL,
   `uvs_asignadas` INT NULL,
   PRIMARY KEY (`codigo_maestro`),
-  INDEX `fk_tbl_maestro_tbl_persona1_idx` (`codigo_persona` ASC) VISIBLE,
+  INDEX `fk_tbl_maestro_tbl_persona1_idx` (`codigo_persona` ASC) ,
   CONSTRAINT `fk_tbl_maestro_tbl_persona1`
     FOREIGN KEY (`codigo_persona`)
     REFERENCES `db_escuela`.`tbl_persona` (`codigo_persona`)
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `db_escuela`.`tbl_seccion` (
   `nombre_clase` VARCHAR(45) NULL,
   `uvs` INT NULL,
   PRIMARY KEY (`codigo_seccion`),
-  INDEX `fk_tbl_seccion_tbl_maestro1_idx` (`codigo_maestro` ASC) VISIBLE,
+  INDEX `fk_tbl_seccion_tbl_maestro1_idx` (`codigo_maestro` ASC) ,
   CONSTRAINT `fk_tbl_seccion_tbl_maestro1`
     FOREIGN KEY (`codigo_maestro`)
     REFERENCES `db_escuela`.`tbl_maestro` (`codigo_maestro`)
@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS `db_escuela`.`tbl_seccionXestudiante` (
   `codigo_seccion` INT NOT NULL,
   `codigo_estudiante` INT NOT NULL,
   PRIMARY KEY (`codigo_seccion`, `codigo_estudiante`),
-  INDEX `fk_tbl_seccionXestudiante_tbl_estudiantes1_idx` (`codigo_estudiante` ASC) VISIBLE,
+  INDEX `fk_tbl_seccionXestudiante_tbl_estudiantes1_idx` (`codigo_estudiante` ASC) ,
   CONSTRAINT `fk_tbl_seccionXestudiante_tbl_seccion1`
     FOREIGN KEY (`codigo_seccion`)
     REFERENCES `db_escuela`.`tbl_seccion` (`codigo_seccion`)
