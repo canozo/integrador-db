@@ -28,9 +28,9 @@ FROM INSERTED;
 
 SELECT @fecha2 = LEFT(CONVERT(VARCHAR, @nfecha_nacimiento, 120), 10)
 
-SET @StrInsert = 'INSERT INTO tbl_persona values('+ @persona2 + ', '+ @nnombre + ', '+ @napellido + ', '+ @fecha2 +');';
+SET @StrInsert = 'INSERT INTO tbl_persona values(`' @persona2 + '`, `'+ @nnombre + '`, `'+ @napellido + '`, `'+ @fecha2 +'`);';
 
-INSERT INTO dbo.Bitacora VALUES (2, @StrInsert, 2);
+INSERT INTO dbo.Bitacora VALUES ( @StrInsert);
 
 
 
@@ -61,9 +61,9 @@ SELECT @ncodigo_persona = INSERTED.codigo_persona
 FROM INSERTED;
 select @persona2 = CAST(@ncodigo_persona as varchar(10))
 
-SET @StrInsert = 'INSERT INTO tbl_maestro values('+@maestro+', '+@persona2 + ', '+ @unidades+');';
+SET @StrInsert = 'INSERT INTO tbl_maestro values(`'@maestro+'`, `'+@persona2 + '`, `'+ @unidades+'`);';
 
-INSERT INTO dbo.Bitacora VALUES (2, @StrInsert, 2);
+INSERT INTO dbo.Bitacora VALUES ( @StrInsert);
 
 
 --agregar seccion
@@ -97,9 +97,9 @@ SELECT @ncodigo_maestro = INSERTED.codigo_maestro
 FROM INSERTED;
 select @maestro = CAST(@ncodigo_maestro as varchar(10))
 
-SET @StrInsert = 'INSERT INTO tbl_secciones values('+@seccion+', '+@maestro + ', '+ @nnombre_clase+ ', '+ @unidades+');';
+SET @StrInsert = 'INSERT INTO tbl_secciones values(`'@seccion+'`, `'+@maestro + '`, `'+ @nnombre_clase+ '`, `'+ @unidades+'`);';
 
-INSERT INTO dbo.Bitacora VALUES (2, @StrInsert, 2);
+INSERT INTO dbo.Bitacora VALUES ( @StrInsert);
 
 
 --agregar estudiante
@@ -126,9 +126,9 @@ SELECT @ncodigo_estudiante = INSERTED.codigo_estudiante
 FROM INSERTED;
 select @estudiante = CAST(@ncodigo_estudiante as varchar(10))
 
-SET @StrInsert = 'INSERT INTO tbl_estudiantes values('+@estudiante+', '+@persona + ', '+ @nnumero_cuenta+');';
+SET @StrInsert = 'INSERT INTO tbl_estudiantes values(`'@estudiante+'`, `'+@persona + '`, `'+ @nnumero_cuenta+'`);';
 
-INSERT INTO dbo.Bitacora VALUES (2, @StrInsert, 2);
+INSERT INTO dbo.Bitacora VALUES ( @StrInsert);
 
 
 --agregar seccion X estudiante
@@ -152,9 +152,9 @@ SELECT @ncodigo_seccion = INSERTED.codigo_seccion
 FROM INSERTED;
 select @seccion = CAST(@ncodigo_seccion as varchar(10))
 
-SET @StrInsert = 'INSERT INTO tbl_seccionXestudiante values('+@seccion+', '+@estudiante +');';
+SET @StrInsert = 'INSERT INTO tbl_seccionXestudiante values(`'@seccion+'`, `'+@estudiante +'`);';
 
-INSERT INTO dbo.Bitacora VALUES (2, @StrInsert, 2);
+INSERT INTO dbo.Bitacora VALUES ( @StrInsert);
 
 
 
@@ -177,8 +177,8 @@ BEGIN
     FROM DELETED
     select @persona = CAST(@ncodigo_persona as varchar(10))
 
-    SET @StrDelete = 'DELETE FROM tbl_persona where codigo_persona = '+@persona+');';
-    INSERT INTO dbo.Bitacora VALUES (2, @StrDelete, 2);
+    SET @StrDelete = 'DELETE FROM tbl_persona where codigo_persona = `'+@persona+'`);';
+    INSERT INTO dbo.Bitacora VALUES ( @StrDelete);
 END
 
 
@@ -199,8 +199,8 @@ BEGIN
     FROM DELETED
     select @maestro = CAST(@ncodigo_maestro as varchar(10))
 
-    SET @StrDelete = 'DELETE FROM tbl_maestro where codigo_maestro = '+@maestro+');';
-    INSERT INTO dbo.Bitacora VALUES (2, @StrDelete, 2);
+    SET @StrDelete = 'DELETE FROM tbl_maestro where codigo_maestro = `'+@maestro+'`);';
+    INSERT INTO dbo.Bitacora VALUES ( @StrDelete);
 END
 
 --delete seccion
@@ -220,8 +220,8 @@ BEGIN
     FROM DELETED
     select @seccion = CAST(@ncodigo_seccion as varchar(10))
 
-    SET @StrDelete = 'DELETE FROM tbl_seccion where codigo_seccion = '+@seccion+');';
-    INSERT INTO dbo.Bitacora VALUES (2, @StrDelete, 2);
+    SET @StrDelete = 'DELETE FROM tbl_seccion where codigo_seccion = `'+@seccion+'`);';
+    INSERT INTO dbo.Bitacora VALUES ( @StrDelete);
 END
 
 -- delete estudiante
@@ -241,8 +241,8 @@ BEGIN
     FROM DELETED
     select @estudiante = CAST(@ncodigo_estudiante as varchar(10))
 
-    SET @StrDelete = 'DELETE FROM tbl_estudiantes where codigo_estudiante = '+@estudiante+');';
-    INSERT INTO dbo.Bitacora VALUES (2, @StrDelete, 2);
+    SET @StrDelete = 'DELETE FROM tbl_estudiantes where codigo_estudiante = `'+@estudiante+'`);';
+    INSERT INTO dbo.Bitacora VALUES ( @StrDelete);
 END
 
 --delete seccionXestdiante ??
@@ -270,8 +270,8 @@ BEGIN
         select @estudiante = CAST(@ncodigo_estudiante as varchar(10))
 
 
-        SET @StrDelete = 'DELETE FROM tbl_seccionXestudiante where codigo_seccion = '+@seccion +', and codigo_estudiante = '+ @estudiante+' );';
-        INSERT INTO dbo.Bitacora VALUES (2, @StrDelete, 2);
+        SET @StrDelete = 'DELETE FROM tbl_seccionXestudiante where codigo_seccion = `'+@seccion +'`, and codigo_estudiante = `'+ @estudiante+'` );';
+        INSERT INTO dbo.Bitacora VALUES ( @StrDelete);
         END
 
 --update persona
@@ -302,12 +302,12 @@ FROM INSERTED;
 
 SELECT @nfecha_nacimiento = INSERTED.fecha_nacimiento 
 FROM INSERTED;
-select @fecha2 = CAST(@nfecha_nacimiento as varchar(25))
+SELECT @fecha2 = LEFT(CONVERT(VARCHAR, @nfecha_nacimiento, 120), 10)
 
-SET @StrInsert = 'UPDATE tbl_persona values set nombre = '+@nnombre + ', apellido = '+ @napellido+ ', fecha_nacimiento = '+ @fecha2+'
-                  where codigo_persona = '+ @persona2+';';
+SET @StrInsert = 'UPDATE tbl_persona values set nombre = `'+@nnombre + '`, apellido = `'+ @napellido+ '`, fecha_nacimiento = `'+ @fecha2+'`
+                  where codigo_persona = `'+ @persona2+'`;';
 
-INSERT INTO dbo.Bitacora VALUES (2, @StrInsert, 2);
+INSERT INTO dbo.Bitacora VALUES (@StrInsert);
 END
 
 
@@ -337,9 +337,9 @@ FROM INSERTED;
 select @unidades = CAST(@nuvs_asignadas as varchar(25))
 
 
-SET @StrInsert = 'UPDATE tbl_maestro values set uvs_asignadas = '+@unidades +'where codigo_persona = '+ @persona2+';';
+SET @StrInsert = 'UPDATE tbl_maestro values set uvs_asignadas = `'+@unidades +'` where codigo_persona = `'+ @persona2+'`;';
 
-INSERT INTO dbo.Bitacora VALUES (2, @StrInsert, 2);
+INSERT INTO dbo.Bitacora VALUES (@StrInsert);
 END
 
 
@@ -375,9 +375,9 @@ SELECT @ncodigo_maestro = INSERTED.codigo_maestro
 FROM INSERTED;
 select @maestro = CAST(@ncodigo_maestro as varchar(10))
 
-SET @StrInsert = 'UPDATE tbl_secciones set uvs = '+@unidades+',  codigo_maestro = '+@maestro + ', nombre clase = '+ @nnombre_clase+' where codigo_seccion = '+@seccion+';';
+SET @StrInsert = 'UPDATE tbl_secciones set uvs = `'+@unidades+'`,  codigo_maestro = `'+@maestro + '`, nombre clase = `'+ @nnombre_clase+'` where codigo_seccion = `'+@seccion+'`;';
 
-INSERT INTO dbo.Bitacora VALUES (2, @StrInsert, 2);
+INSERT INTO dbo.Bitacora VALUES (@StrInsert);
 
 END
 --update estudiantes
@@ -396,10 +396,6 @@ DECLARE @StrInsert varchar(200),
         @estudiante varchar(15)
 ;
 
-SELECT @codigo_persona = INSERTED.codigo_persona  
-FROM INSERTED;
-select @persona = CAST(@ncodigo_persona as varchar(10))
-
 SELECT @nnumero_cuenta = INSERTED.numero_cuenta 
 FROM INSERTED;
 
@@ -408,8 +404,10 @@ FROM INSERTED;
 select @estudiante = CAST(@ncodigo_estudiante as varchar(10))
 
 
-SET @StrInsert = 'UPDATE tbl_estudiantes set numero_cuenta = '+@nnumero_cuenta+' where codigo_estudiante = '+@estudiante+';';
+SET @StrInsert = 'UPDATE tbl_estudiantes set numero_cuenta = `'+@nnumero_cuenta+'` where codigo_estudiante = `'+@estudiante+'`;';
 
 
-INSERT INTO dbo.Bitacora VALUES (2, @StrInsert, 2);
+INSERT INTO dbo.Bitacora VALUES ( @StrInsert);
+
+
 END
