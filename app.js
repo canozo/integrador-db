@@ -3,10 +3,13 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const app = express();
+
 const conexionesRouter = require('./api/conexiones');
 const replicacionRouter = require('./api/replicacion');
 const jobRouter = require('./api/job');
-const app = express();
+
+app.use(express.static('client/build'));
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -20,6 +23,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/conexiones', conexionesRouter);
 app.use('/api/replicacion', replicacionRouter);
 app.use('/api/job', jobRouter);
+
+// cualquier otra requests, devolver la pagina
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname + '/client/build/index.html'));
+});
 
 app.use(function(req, res, next) {
   next(createError(404));
